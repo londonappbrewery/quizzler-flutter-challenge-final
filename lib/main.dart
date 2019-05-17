@@ -33,8 +33,6 @@ class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
   void checkAnswer(bool userPickedAnswer) {
-    bool correctAnswer = quizBrain.getCorrectAnswer();
-
     setState(() {
       //TODO: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If so,
       //On the next line, you can also use if (quizBrain.isFinished()) {}, it does the same thing.
@@ -60,6 +58,8 @@ class _QuizPageState extends State<QuizPage> {
 
       //TODO: Step 6 - If we've not reached the end, ELSE do the answer checking steps below 👇
       else {
+        bool correctAnswer = quizBrain.getCorrectAnswer();
+        
         if (userPickedAnswer == correctAnswer) {
           scoreKeeper.add(Icon(
             Icons.check,
