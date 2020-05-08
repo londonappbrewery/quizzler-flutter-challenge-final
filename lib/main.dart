@@ -46,33 +46,42 @@ class _QuizPageState extends State<QuizPage> {
 
         //Modified for our purposes:
         Alert(
-          context: context,
-          title: 'Finished!',
-          desc: 'You\'ve reached the end of the quiz.',
-        ).show();
-
-        //TODO Step 4 Part C - reset the questionNumber,
-        quizBrain.reset();
-
-        //TODO Step 4 Part D - empty out the scoreKeeper.
-        scoreKeeper = [];
+            context: context,
+            title: 'Finished!',
+            desc: 'You\'ve reached the end of the quiz.',
+            style: AlertStyle(overlayColor: Colors.black54),
+            buttons: [
+              DialogButton(
+                child: Text(
+                  'Restart',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  setState(() {
+                    //TODO Step 4 Part C - reset the questionNumber,
+                    quizBrain.reset();
+                    //TODO Step 4 Part D - empty out the scoreKeeper.
+                    scoreKeeper = [];
+                  });
+                  Navigator.pop(context);
+                },
+              )
+            ]).show();
       }
 
       //TODO: Step 6 - If we've not reached the end, ELSE do the answer checking steps below 👇
-      else {
-        if (userPickedAnswer == correctAnswer) {
-          scoreKeeper.add(Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-        } else {
-          scoreKeeper.add(Icon(
-            Icons.close,
-            color: Colors.red,
-          ));
-        }
-        quizBrain.nextQuestion();
+      if (userPickedAnswer == correctAnswer) {
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
       }
+      quizBrain.nextQuestion();
     });
   }
 
