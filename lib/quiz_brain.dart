@@ -61,6 +61,6 @@ class QuizBrain {
 
   //TODO: Step 4 part B - Create a reset() method here that sets the questionNumber back to 0.
   void reset() {
-    _questionNumber = 0;
+    _questionNumber = -1;
   }
 }
