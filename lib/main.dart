@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-//TODO: Step 2 - Import the rFlutter_Alert package here.
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -34,47 +32,25 @@ class _QuizPageState extends State<QuizPage> {
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
-
     setState(() {
-      //TODO: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If so,
-      //On the next line, you can also use if (quizBrain.isFinished()) {}, it does the same thing.
-      if (quizBrain.isFinished() == true) {
-        //TODO Step 4 Part A - show an alert using rFlutter_alert,
-
-        //This is the code for the basic alert from the docs for rFlutter Alert:
-        //Alert(context: context, title: "RFLUTTER", desc: "Flutter is awesome.").show();
-
-        //Modified for our purposes:
-        Alert(
-          context: context,
-          title: 'Finished!',
-          desc: 'You\'ve reached the end of the quiz.',
-        ).show();
-
-        //TODO Step 4 Part C - reset the questionNumber,
-        quizBrain.reset();
-
-        //TODO Step 4 Part D - empty out the scoreKeeper.
-        scoreKeeper = [];
+      if (userPickedAnswer == correctAnswer) {
+        print('user got it right!');
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        print('user git it wrong');
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
       }
-
-      //TODO: Step 6 - If we've not reached the end, ELSE do the answer checking steps below 👇
-      else {
-        if (userPickedAnswer == correctAnswer) {
-          scoreKeeper.add(Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-        } else {
-          scoreKeeper.add(Icon(
-            Icons.close,
-            color: Colors.red,
-          ));
-        }
-        quizBrain.nextQuestion();
-      }
+      quizBrain.nextQuestion();
     });
   }
+
+  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -101,52 +77,55 @@ class _QuizPageState extends State<QuizPage> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              textColor: Colors.white,
-              color: Colors.green,
-              child: Text(
+            child: TextButton(
+              onPressed: () {
+                checkAnswer(true);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.green, // Background Color
+              ),
+              child: const Text(
                 'True',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
                 ),
               ),
-              onPressed: () {
-                //The user picked true.
-                checkAnswer(true);
-              },
             ),
           ),
         ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              color: Colors.red,
-              child: Text(
-                'False',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
+            child: TextButton(
               onPressed: () {
-                //The user picked false.
                 checkAnswer(false);
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.red, // Background Color
+              ),
+              child: const Text(
+                'False',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
             ),
           ),
         ),
-        Row(
-          children: scoreKeeper,
-        )
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              direction: Axis.horizontal,
+              alignment: WrapAlignment.start,
+              children: scoreKeeper,
+            ),
+          ),
+        ),
       ],
     );
   }
 }
-
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/
